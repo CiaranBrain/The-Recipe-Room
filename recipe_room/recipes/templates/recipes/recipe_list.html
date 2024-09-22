@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Room</title>
-</head>
-<body>
-    <h1>Recipe List</h1>
+{% extends 'base.html' %}
+
+{% block title %}Recipe List - The Recipe Room{% endblock %}
+
+{% block content %}
+    <h2>Recipe List</h2>
     <ul>
         {% for recipe in recipes %}
             <li>
@@ -14,5 +11,4 @@
             </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
