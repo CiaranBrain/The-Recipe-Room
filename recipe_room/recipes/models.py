@@ -5,8 +5,7 @@ class Recipe(models.Model):
     """Represents a recipe with detailed information and an image."""
 
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='recipe_images/', default='\static\images\no_image.png',
-                              blank=True, null=True)
+    image = models.ImageField(upload_to='recipe_images/', blank=True, null=True)
     description = models.TextField()
     ingredients = models.TextField()
     instructions = models.TextField()

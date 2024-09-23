@@ -25,6 +25,11 @@
             <!-- Recipe Instructions -->
             <h3>Instructions:</h3>
             <p>{{ recipe.instructions }}</p>
+
+            <!-- Edit and Delete Buttons -->
+            <button id="edit-btn" class="view-recipe-btn">Edit Recipe</button>
+            <button id="delete-btn" class="view-recipe-btn" data-url="{% url 'recipe_delete' recipe.id %}" style="background-color: #dc3545;">Delete Recipe</button>
+
         </div>
 
         <!-- Back to Recipe List Link -->
@@ -32,4 +37,33 @@
             <a href="{% url 'recipe_list' %}">&laquo; Back to Recipe List</a>
         </div>
     </div>
+
+<!-- Modal for Editing Recipe -->
+<div id="edit-modal" style="display: none;">
+    <div class="modal-content">
+        <form id="edit-recipe-form" method="POST" enctype="multipart/form-data" action="{% url 'recipe_edit' recipe.id %}">
+            {% csrf_token %}
+            <h3>Edit Recipe</h3>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="{{ recipe.title }}">
+            
+            <label for="ingredients">Ingredients</label>
+            <textarea id="ingredients" name="ingredients">{{ recipe.ingredients }}</textarea>
+            
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" name="instructions">{{ recipe.instructions }}</textarea>
+            
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image">
+            
+            <button type="submit">Save Changes</button>
+            <button type="button" id="close-modal">Cancel</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/recipe.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Publish Recipe - The Recipe Room{% endblock %}
+
+{% block content %}
+    <h2>Publish a New Recipe</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Publish Recipe</button>
+    </form>
+
+    <a href="{% url 'recipe_list' %}">Back to Recipe List</a>
+{% endblock %}

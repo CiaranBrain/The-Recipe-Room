@@ -12,6 +12,7 @@
         <h1>The Recipe Room</h1>
         <nav>
             <a href="{% url 'recipe_list' %}">Home</a>
+            <a href="{% url 'publish_recipe' %}" class="publish-recipe-btn">Publish Recipe</a>
         </nav>
     </header>
 
@@ -23,5 +24,6 @@
     <footer>
         <p>&copy; 2024 The Recipe Room</p>
     </footer>
+    <script src="{% static 'js\recipe.js' %}"></script>
 </body>
 </html>
