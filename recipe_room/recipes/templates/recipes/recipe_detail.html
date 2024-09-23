@@ -1,14 +1,35 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ recipe.title }} - The Recipe Room{% endblock %}
 
 {% block content %}
-    <h2>{{ recipe.title }}</h2>
-    <h3>Ingredients:</h3>
-    <p>{{ recipe.ingredients }}</p>
+    <div class="recipe-detail-container">
+        <!-- Recipe Title -->
+        <h2 class="recipe-title">{{ recipe.title }}</h2>
 
-    <h3>Instructions:</h3>
-    <p>{{ recipe.instructions }}</p>
+        <!-- Recipe Image -->
+        <div class="recipe-image-container">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-detail-image">
+            {% else %}
+                <img src="{% static 'images/no_image.png' %}" alt="Default Image" class="recipe-detail-image">
+            {% endif %}
+        </div>
 
-    <a href="{% url 'recipe_list' %}">Back to Recipe List</a>
+        <!-- Recipe Ingredients -->
+        <div class="recipe-info-container">
+            <h3>Ingredients:</h3>
+            <p>{{ recipe.ingredients }}</p>
+
+            <!-- Recipe Instructions -->
+            <h3>Instructions:</h3>
+            <p>{{ recipe.instructions }}</p>
+        </div>
+
+        <!-- Back to Recipe List Link -->
+        <div class="back-link">
+            <a href="{% url 'recipe_list' %}">&laquo; Back to Recipe List</a>
+        </div>
+    </div>
 {% endblock %}

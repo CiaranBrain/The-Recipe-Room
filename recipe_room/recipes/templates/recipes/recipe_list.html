@@ -1,32 +1,54 @@
 {% extends 'base.html' %}
+{% load static %} 
 
 {% block title %}Recipe List - The Recipe Room{% endblock %}
 
 {% block content %}
     <h2>Recipe List</h2>
 
-    <ul>
+    <!-- Recipe Container -->
+    <div class="recipe-container">
         {% for recipe in page_obj %}
-            <li>
-                <a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <div class="recipe-card">
+            <a href="{% url 'recipe_detail' recipe.id %}">
+                <!-- Recipe Image -->
+                {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+                {% else %}
+                <img src="{% static 'images/no_image.png' %}" alt="Default Image" class="recipe-image">
+                {% endif %}
 
+                <!-- Recipe Title -->
+                <h3 class="recipe-title">{{ recipe.title }}</h3>
+            </a>
+            <!-- Recipe Description -->
+            <p class="recipe-description">{{ recipe.description|truncatewords:20 }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
     <div class="pagination">
         <span class="step-links">
+            <!-- Previous Page Links -->
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
             {% endif %}
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
+            <!-- Numbered Page Links -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="current">{{ num }}</span>
+                {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
 
+            <!-- Next Page Links -->
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
             {% endif %}
         </span>
     </div>

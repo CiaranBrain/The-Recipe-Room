@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+header {
+    background-color: #6c757d;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #6c757d;
+    color: white;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.step-links a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+}
+
+.step-links a:hover {
+    background-color: #5a6268;
+}
+
+.current {
+    margin: 0 5px;
+    font-weight: bold;
+}
