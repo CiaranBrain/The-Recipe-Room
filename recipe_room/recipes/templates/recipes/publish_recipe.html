@@ -4,13 +4,36 @@
 {% block title %}Publish Recipe - The Recipe Room{% endblock %}
 
 {% block content %}
-    <h2>Publish a New Recipe</h2>
-
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn">Publish Recipe</button>
-    </form>
-
-    <a href="{% url 'recipe_list' %}">Back to Recipe List</a>
+    <div class="container mt-5">
+        <h2 class="mb-4">Create a New Recipe</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.ingredients.label_tag }}
+                {{ form.ingredients }}
+                {{ form.ingredients.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.instructions.label_tag }}
+                {{ form.instructions }}
+                {{ form.instructions.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+                {{ form.image.errors }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 {% endblock %}
