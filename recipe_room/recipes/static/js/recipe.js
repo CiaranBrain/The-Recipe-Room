@@ -1,18 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const editBtn = document.getElementById('edit-btn');
-    const closeModalBtn = document.getElementById('close-modal');
-    const editModal = document.getElementById('edit-modal');
-    const editForm = document.getElementById('edit-recipe-form');
+    const editBtn = document.getElementById('edit-btn'); // Button that triggers the modal
+    const editModalElement = document.getElementById('edit-modal'); // Modal element
+    const editForm = document.getElementById('edit-recipe-form'); // Form inside the modal
+
+    // Initialize the Bootstrap 5 Modal
+    const editModal = new bootstrap.Modal(editModalElement);
 
     // Show the edit modal when the edit button is clicked
     editBtn.addEventListener('click', function () {
-        editModal.style.display = 'block';
+        editModal.show(); // Use Bootstrap's modal show method
     });
 
-    // Close the modal when the close button is clicked
-    closeModalBtn.addEventListener('click', function () {
-        editModal.style.display = 'none';
-    });
+    // Close the modal (Bootstrap automatically handles this with data-bs-dismiss="modal" on the cancel button)
 
     // Handle the form submission with AJAX
     editForm.addEventListener('submit', function (e) {
@@ -32,10 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Success! You can close the modal and maybe refresh part of the page.
-                editModal.style.display = 'none';
+                editModal.hide(); // Hide the modal using Bootstrap's hide method
                 alert('Recipe updated successfully!');
-                location.reload(); // Reload the page to reflect changes
+                location.reload(); // Optionally reload the page to reflect changes
             } else {
                 alert('Error updating the recipe.');
             }
@@ -46,12 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// delete button
 const deleteBtn = document.getElementById('delete-btn');
 
 deleteBtn.addEventListener('click', function () {
     const confirmDelete = confirm('Are you sure you want to delete this recipe?');
     if (confirmDelete) {
-        const deleteUrl = deleteBtn.getAttribute('data-url'); // Get URL from data attribute
+        const deleteUrl = deleteBtn.getAttribute('data-url');
         fetch(deleteUrl, {
             method: 'POST',
             headers: {

@@ -10,7 +10,7 @@ def recipe_list(request):
     recipe_list = Recipe.objects.all().order_by('created_on')
 
     # Set up pagination
-    paginator = Paginator(recipe_list, 3)
+    paginator = Paginator(recipe_list, 6)
     page_number = request.GET.get('page')
 
     page_obj = paginator.get_page(page_number)
