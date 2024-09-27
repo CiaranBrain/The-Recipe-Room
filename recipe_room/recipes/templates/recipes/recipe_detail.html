@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <!-- Edit and Delete Buttons -->
+        <!-- Buttons Section -->
         <div class="row mb-4">
             <div class="col text-center">
                 <button id="edit-btn" class="btn btn-warning me-2" data-url="{% url 'recipe_edit' recipe.id %}">Edit Recipe</button>
@@ -70,9 +70,81 @@
                 <a href="{% url 'recipe_list' %}" class="btn btn-link">&laquo; Back to Recipe List</a>
             </div>
         </div>
+
+        <!-- Recipe Rating Section -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Average Rating: {{ average_rating }} / 5</h3>
+
+                        <!-- Display Ratings -->
+                        <h4>Ratings:</h4>
+                        <ul class="list-unstyled">
+                            {% for rating in ratings %}
+                                <li>Rating: {{ rating.value }} stars</li>
+                            {% empty %}
+                                <li>No ratings yet.</li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Rating Form -->
+                        <h4>Rate this Recipe:</h4>
+                        {% if user_rating %}
+                            <p class="text-info">You have already rated this recipe. Your rating: {{ user_rating.value }} stars</p>
+                        {% else %}
+                            <form method="POST" class="d-inline">
+                                {% csrf_token %}
+                                {{ rating_form.as_p }}
+                                <button type="submit" name="rating_submit" class="btn btn-primary">Submit Rating</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Comments</h3>
+
+                        <!-- Display Comments -->
+                        <ul class="list-unstyled">
+                            {% for comment in comments %}
+                                <li>
+                                    <strong>
+                                        {% if comment.user %}
+                                            {{ comment.user.username }}
+                                        {% else %}
+                                            Anonymous
+                                        {% endif %}
+                                    </strong> 
+                                    {{ comment.text }} <br>
+                                    <small class="text-muted">on {{ comment.created_on }}</small>
+                                </li>
+                                <hr>
+                            {% empty %}
+                                <li>No comments yet. Be the first to comment!</li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Comment Form -->
+                        <h4>Leave a Comment:</h4>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ comment_form.as_p }}
+                            <button type="submit" name="comment_submit" class="btn btn-primary">Submit Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Modal for Editing Recipe -->
+    <!-- Edit Recipe Modal -->
     <div id="edit-modal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -83,27 +155,22 @@
                 <div class="modal-body">
                     <form id="edit-recipe-form" method="POST" enctype="multipart/form-data" action="{% url 'recipe_edit' recipe.id %}">
                         {% csrf_token %}
-                        <!-- Title -->
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" id="title" name="title" value="{{ recipe.title }}" class="form-control" required>
                         </div>
-                        <!-- Ingredients -->
                         <div class="mb-3">
                             <label for="ingredients" class="form-label">Ingredients</label>
                             <textarea id="ingredients" name="ingredients" class="form-control" rows="4" required>{{ recipe.ingredients }}</textarea>
                         </div>
-                        <!-- Instructions -->
                         <div class="mb-3">
                             <label for="instructions" class="form-label">Instructions</label>
                             <textarea id="instructions" name="instructions" class="form-control" rows="4" required>{{ recipe.instructions }}</textarea>
                         </div>
-                        <!-- Image -->
                         <div class="mb-3">
                             <label for="image" class="form-label">Image</label>
                             <input type="file" id="image" name="image" class="form-control">
                         </div>
-                        <!-- Modal Footer -->
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -113,8 +180,6 @@
             </div>
         </div>
     </div>
-</div>
-
 {% endblock %}
 
 {% block extra_js %}

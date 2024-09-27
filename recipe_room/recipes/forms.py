@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recipe
+from .models import Recipe, Comment, Rating
 
 class RecipeForm(forms.ModelForm):
     class Meta:
@@ -12,3 +12,14 @@ class RecipeForm(forms.ModelForm):
             'instructions': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Instructions'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['value']

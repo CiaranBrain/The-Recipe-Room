@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Recipe
-from .forms import RecipeForm
+from .models import Recipe, Comment, Rating
+from .forms import RecipeForm, CommentForm, RatingForm
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 def recipe_list(request):
     # Fetch all recipes and order them by a specific field, e.g., 'title'
@@ -21,17 +21,77 @@ def recipe_list(request):
 
     return render(request, 'recipes/recipe_list.html', context)
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Recipe, Comment, Rating
+from .forms import CommentForm, RatingForm
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 
 def recipe_detail(request, recipe_id):
-    # Fetch the recipe or return a 404 if it doesn't exist
-    recipe = get_object_or_404(Recipe, id=recipe_id)
+    """View to display recipe details along with comments and ratings."""
 
-    # Set up the context dictionary to pass to the template
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    comments = recipe.comments.all()  # Get all comments related to the recipe
+    ratings = recipe.ratings.all()  # Get all ratings related to the recipe
+    average_rating = recipe.average_rating()  # Calculate average rating
+
+    # Handle Comment Form
+    if request.method == 'POST' and 'comment_submit' in request.POST:
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.recipe = recipe
+            if request.user.is_authenticated:
+                comment.user = request.user
+            comment.save()
+            return redirect('recipe_detail', recipe_id=recipe.id)
+    else:
+        comment_form = CommentForm()
+
+    # Check if the user has already rated this recipe
+    user_rating = None
+    if request.user.is_authenticated:
+        try:
+            user_rating = Rating.objects.get(recipe=recipe, user=request.user)
+        except Rating.DoesNotExist:
+            user_rating = None
+
+    # Handle Rating Form (Only allow rating if the user hasn't rated yet)
+    if request.method == 'POST' and 'rating_submit' in request.POST:
+        if not user_rating:
+            rating_form = RatingForm(request.POST)
+            if rating_form.is_valid():
+                rating = rating_form.save(commit=False)
+                rating.recipe = recipe
+                if request.user.is_authenticated:
+                    rating.user = request.user
+                rating.save()
+                return redirect('recipe_detail', recipe_id=recipe.id)
+        else:
+            # If the user has already rated, display a message or handle this case
+            return render(request, 'recipe_detail.html', {
+                'recipe': recipe,
+                'comments': comments,
+                'ratings': ratings,
+                'average_rating': average_rating,
+                'comment_form': comment_form,
+                'rating_form': RatingForm(),
+                'error_message': 'You have already rated this recipe.'
+            })
+    else:
+        rating_form = RatingForm()
+
     context = {
         'recipe': recipe,
+        'comments': comments,
+        'ratings': ratings,
+        'average_rating': average_rating,
+        'comment_form': comment_form,
+        'rating_form': rating_form,
+        'user_rating': user_rating
     }
-
     return render(request, 'recipes/recipe_detail.html', context)
+
 
 def publish_recipe(request):
     if request.method == 'POST':
