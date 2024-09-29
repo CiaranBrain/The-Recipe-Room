@@ -3,11 +3,48 @@
 {% block title %}Create an account{% endblock %}
 
 {% block content %}
-    <h1>Create an account</h1>
-        <p>Please, sign up using the following form:</p>
-        <form method="post">
-            {{ user_form.as_p }}
-            {% csrf_token %}
-            <p><input type="submit" value="Create my account"></p>
-        </form>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Create an Account</h1>
+    <p class="text-center mb-4">Please sign up using the following form:</p>
+    <form method="post" class="shadow p-4 rounded bg-light">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ user_form.username.label }}
+            {{ user_form.username }}
+            {% if user_form.username.errors %}
+                <div class="text-danger">{{ user_form.username.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.first_name.label }}
+            {{ user_form.first_name }}
+            {% if user_form.first_name.errors %}
+                <div class="text-danger">{{ user_form.first_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.email.label }}
+            {{ user_form.email }}
+            {% if user_form.email.errors %}
+                <div class="text-danger">{{ user_form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.password.label }}
+            {{ user_form.password }}
+            {% if user_form.password.errors %}
+                <div class="text-danger">{{ user_form.password.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ user_form.password2.label }}
+            {{ user_form.password2 }}
+            {% if user_form.password2.errors %}
+                <div class="text-danger">{{ user_form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Create My Account</button>
+    </form>
+    <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+</div>
 {% endblock %}

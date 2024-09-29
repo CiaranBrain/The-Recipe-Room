@@ -4,6 +4,27 @@
 {% block title %}Saved Recipes{% endblock %}
 
 {% block content %}
-    <h1>Saved Recipes</h1>
-    <p>Welcome to your saved recipes.</p>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Saved Recipes</h1>
+    <p class="text-center">Welcome to your saved recipes. Here you can find all the recipes you’ve saved to try later.</p>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'publish_recipe' %}" class="btn btn-primary">Add a New Recipe</a>
+    </div>
+    
+    <div class="mt-5">
+        <h2 class="mb-3">Your Recipes</h2>
+        <ul class="list-group">
+            {% for recipe in recipes %}
+                <li class="list-group-item">
+                    <h5>{{ recipe.title }}</h5>
+                    <p>{{ recipe.description|truncatewords:20 }}</p>
+                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-info">View Recipe</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-center">No saved recipes found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

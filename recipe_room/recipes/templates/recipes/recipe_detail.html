@@ -4,192 +4,191 @@
 {% block title %}{{ recipe.title }}{% endblock %}
 
 {% block content %}
-    <div class="container py-4">
-        <!-- Recipe Title -->
-        <div class="row mb-4">
-            <div class="col">
-                <h1 class="display-4 text-center">{{ recipe.title }}</h1>
-            </div>
+<div class="container py-4">
+    <!-- Recipe Title -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4 text-center">{{ recipe.title }}</h1>
         </div>
-
-        <!-- Recipe Image -->
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                {% if recipe.image %}
-                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
-                {% else %}
-                    <img src="{% static 'images/no_image.png' %}" alt="Default Image" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Recipe Ingredients and Instructions -->
-        <div class="row">
-            <!-- Ingredients Section -->
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">Ingredients</h3>
-                        <ul class="list-unstyled">
-                            {% for ingredient in recipe.ingredients.splitlines %}
-                                <li class="mb-2">
-                                    <i class="bi bi-check-circle text-success"></i> {{ ingredient }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Instructions Section -->
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">Instructions</h3>
-                        <ol class="list-group list-group-numbered">
-                            {% for instruction in recipe.instructions.splitlines %}
-                                <li class="list-group-item">{{ instruction }}</li>
-                            {% endfor %}
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recipe Rating Section -->
-        <div class="row mb-4">
-            <div class="col-lg-12">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">Average Rating: {{ average_rating }} / 5</h3>
-
-                        <!-- Display Ratings -->
-                        <h4>Ratings:</h4>
-                        <ul class="list-unstyled">
-                            {% for rating in ratings %}
-                                <li>Rating: {{ rating.value }} stars</li>
-                            {% empty %}
-                                <li>No ratings yet.</li>
-                            {% endfor %}
-                        </ul>
-
-                        <!-- Rating Form -->
-                        <h4>Rate this Recipe:</h4>
-                        {% if user_rating %}
-                            <p class="text-info">You have already rated this recipe. Your rating: {{ user_rating.value }} stars</p>
-                        {% else %}
-                            <form method="POST" class="d-inline">
-                                {% csrf_token %}
-                                {{ rating_form.as_p }}
-                                <button type="submit" name="rating_submit" class="btn btn-primary">Submit Rating</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-                <!-- Comments Section -->
-        <div class="row mb-4">
-            <div class="col-lg-12">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h3 class="card-title">Comments</h3>
-
-                        <!-- Display Comments -->
-                        <ul class="list-unstyled">
-                            {% for comment in comments %}
-                                <li class="mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <i class="bi bi-person-circle fs-3"></i> <!-- Bootstrap icon for user avatar -->
-                                        </div>
-                                        <div>
-                                            <strong>
-                                                {% if comment.user %}
-                                                    {{ comment.user.username }}
-                                                {% else %}
-                                                    Anonymous
-                                                {% endif %}
-                                            </strong> 
-                                            <p class="mb-1">{{ comment.text }}</p>
-                                            <small class="text-muted">on {{ comment.created_on }}</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <hr>
-                            {% empty %}
-                                <li class="text-muted">No comments yet. Be the first to comment!</li>
-                            {% endfor %}
-                        </ul>
-
-                        <!-- Comment Form -->
-                        <h4 class="mt-4">Leave a Comment:</h4>
-                        <form method="POST" class="mt-3">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                {{ comment_form.text.label_tag }} <!-- Display the label -->
-                                {{ comment_form.text }} <!-- Add Bootstrap class to the textarea -->
-                            </div>
-                            <button type="submit" name="comment_submit" class="btn btn-primary">Submit Comment</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
     </div>
+
+    <!-- Recipe Image -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'images/no_image.png' %}" alt="Default Image" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+            {% endif %}
         </div>
+    </div>
+
+    <!-- Recipe Ingredients and Instructions -->
+    <div class="row">
+        <!-- Ingredients Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Ingredients</h3>
+                    <ul class="list-unstyled">
+                        {% for ingredient in recipe.ingredients.splitlines %}
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success"></i> {{ ingredient }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Instructions</h3>
+                    <ol class="list-group list-group-numbered">
+                        {% for instruction in recipe.instructions.splitlines %}
+                            <li class="list-group-item">{{ instruction }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Rating Section -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Average Rating: <span class="text-warning">{{ average_rating }} / 5</span></h3>
+
+                    <!-- Display Ratings -->
+                    <h4>Ratings:</h4>
+                    <ul class="list-unstyled">
+                        {% for rating in ratings %}
+                            <li>Rating: {{ rating.value }} stars</li>
+                        {% empty %}
+                            <li>No ratings yet.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Rating Form -->
+                    <h4>Rate this Recipe:</h4>
+                    {% if user_rating %}
+                        <p class="text-info">You have already rated this recipe. Your rating: {{ user_rating.value }} stars</p>
+                    {% else %}
+                        <form method="POST" class="d-inline">
+                            {% csrf_token %}
+                            {{ rating_form.as_p }}
+                            <button type="submit" name="rating_submit" class="btn btn-primary">Submit Rating</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title">Comments</h3>
+
+                    <!-- Display Comments -->
+                    <ul class="list-unstyled">
+                        {% for comment in comments %}
+                            <li class="mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="bi bi-person-circle fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <strong>
+                                            {% if comment.user %}
+                                                {{ comment.user.username }}
+                                            {% else %}
+                                                Anonymous
+                                            {% endif %}
+                                        </strong>
+                                        <p class="mb-1">{{ comment.text }}</p>
+                                        <small class="text-muted">on {{ comment.created_on }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <hr>
+                        {% empty %}
+                            <li class="text-muted">No comments yet. Be the first to comment!</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Comment Form -->
+                    <h4 class="mt-4">Leave a Comment:</h4>
+                    <form method="POST" class="mt-3">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ comment_form.text }}
+                        </div>
+                        <button type="submit" name="comment_submit" class="btn btn-primary">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Buttons Section -->
-        <div class="row mb-4">
-            <div class="col text-center">
-                <button id="edit-btn" class="btn btn-warning me-2" data-url="{% url 'recipe_edit' recipe.id %}">Edit Recipe</button>
-                <button id="delete-btn" class="btn btn-danger" data-url="{% url 'recipe_delete' recipe.id %}">Delete Recipe</button>
-            </div>
+    <div class="row mb-4">
+        <div class="col text-center">
+            <button id="edit-btn" class="btn btn-warning me-2" data-url="{% url 'recipe_edit' recipe.id %}">Edit Recipe</button>
+            <button id="delete-btn" class="btn btn-danger" data-url="{% url 'recipe_delete' recipe.id %}">Delete Recipe</button>
         </div>
+    </div>
 
-        <!-- Back to Recipe List Link -->
-        <div class="row">
-            <div class="col text-center">
-                <a href="{% url 'recipe_list' %}" class="btn btn-link">&laquo; Back to Recipe List</a>
-            </div>
+    <!-- Back to Recipe List Link -->
+    <div class="row">
+        <div class="col text-center">
+            <a href="{% url 'recipe_list' %}" class="btn btn-link">&laquo; Back to Recipe List</a>
         </div>
+    </div>
 
-        <!-- Edit Recipe Modal -->
-        <div id="edit-modal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Recipe</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="edit-recipe-form" method="POST" enctype="multipart/form-data" action="{% url 'recipe_edit' recipe.id %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" id="title" name="title" value="{{ recipe.title }}" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ingredients" class="form-label">Ingredients</label>
-                                <textarea id="ingredients" name="ingredients" class="form-control" rows="4" required>{{ recipe.ingredients }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="instructions" class="form-label">Instructions</label>
-                                <textarea id="instructions" name="instructions" class="form-control" rows="4" required>{{ recipe.instructions }}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Image</label>
-                                <input type="file" id="image" name="image" class="form-control">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
+    <!-- Edit Recipe Modal -->
+    <div id="edit-modal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Recipe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-recipe-form" method="POST" enctype="multipart/form-data" action="{% url 'recipe_edit' recipe.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" name="title" value="{{ recipe.title }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ingredients" class="form-label">Ingredients</label>
+                            <textarea id="ingredients" name="ingredients" class="form-control" rows="4" required>{{ recipe.ingredients }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="instructions" class="form-label">Instructions</label>
+                            <textarea id="instructions" name="instructions" class="form-control" rows="4" required>{{ recipe.instructions }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image</label>
+                            <input type="file" id="image" name="image" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="{% static 'js/recipe.js' %}"></script>
-    {% endblock %}
+    <script src="{% static 'js/recipe.js' %}"></script>
+</div>
+{% endblock %}
