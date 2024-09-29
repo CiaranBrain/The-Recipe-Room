@@ -31,9 +31,9 @@ def recipe_detail(request, recipe_id):
     """View to display recipe details along with comments and ratings."""
 
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    comments = recipe.comments.all()  # Get all comments related to the recipe
-    ratings = recipe.ratings.all()  # Get all ratings related to the recipe
-    average_rating = recipe.average_rating()  # Calculate average rating
+    comments = recipe.comments.all()
+    ratings = recipe.ratings.all()
+    average_rating = recipe.average_rating()
 
     # Handle Comment Form
     if request.method == 'POST' and 'comment_submit' in request.POST:
@@ -68,7 +68,7 @@ def recipe_detail(request, recipe_id):
                 rating.save()
                 return redirect('recipe_detail', recipe_id=recipe.id)
         else:
-            # If the user has already rated, display a message or handle this case
+            # If the user has already rated, display a message/handle this case
             return render(request, 'recipe_detail.html', {
                 'recipe': recipe,
                 'comments': comments,

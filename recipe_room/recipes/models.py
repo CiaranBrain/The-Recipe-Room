@@ -20,12 +20,11 @@ class Recipe(models.Model):
         return '/static/images/no_image.png'
 
     def average_rating(self):
-        """Calculate the average rating for the recipe."""
-        ratings = self.ratings.all()  # Access all related ratings
+        ratings = self.ratings.all()
         if ratings.exists():
-            return sum(rating.value for rating in ratings) / ratings.count()
-        return 0  # Return 0 if no ratings are available
-
+            average = sum(rating.value for rating in ratings) / ratings.count()
+            return round(average * 2) / 2
+        return 0
 
 class Comment(models.Model):
     """Represents a comment on a recipe."""
