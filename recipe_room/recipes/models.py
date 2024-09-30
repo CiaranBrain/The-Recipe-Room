@@ -17,7 +17,7 @@ class Recipe(models.Model):
     def get_image_url(self):
         if self.image:
             return self.image.url
-        return '/static/images/no_image.png'
+        return '\static\recipes\images\no_image.png'
 
     def average_rating(self):
         ratings = self.ratings.all()
