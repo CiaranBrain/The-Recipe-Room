@@ -7,7 +7,8 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Saved Recipes</h1>
     <p class="text-center">Welcome to your saved recipes. Here you can find all the recipes you’ve saved to try later.</p>
-    
+    <p>You can <a href="{% url 'edit' %}">edit your
+        profile</a> or <a href="{% url 'password_change' %}">change your password</a>.</p>
     <div class="text-center mt-4">
         <a href="{% url 'publish_recipe' %}" class="btn btn-primary">Add a New Recipe</a>
     </div>

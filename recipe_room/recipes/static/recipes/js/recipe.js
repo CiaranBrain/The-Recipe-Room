@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
         editModal.show(); // Use Bootstrap's modal show method
     });
 
-    // Close the modal (Bootstrap automatically handles this with data-bs-dismiss="modal" on the cancel button)
-
     // Handle the form submission with AJAX
     editForm.addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent normal form submission
@@ -32,10 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.success) {
                 editModal.hide(); // Hide the modal using Bootstrap's hide method
-                alert('Recipe updated successfully!');
                 location.reload(); // Optionally reload the page to reflect changes
-            } else {
-                alert('Error updating the recipe.');
             }
         })
         .catch(error => {
@@ -43,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
 // delete button
 const deleteBtn = document.getElementById('delete-btn');

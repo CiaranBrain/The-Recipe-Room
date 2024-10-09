@@ -4,6 +4,7 @@ from .models import Recipe, Comment, Rating
 from .forms import RecipeForm, CommentForm, RatingForm
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 def recipe_list(request):
     # Fetch all recipes and order them by a specific field, e.g., 'created_on'
@@ -113,15 +114,24 @@ def recipe_edit(request, recipe_id):
         if 'image' in request.FILES:
             recipe.image = request.FILES['image']
 
-        recipe.save()
-        return JsonResponse({'success': True})
+        try:
+            recipe.save()
+            messages.success(request, 'Recipe updated successfully')
+            return JsonResponse({'success': True})
+        except:
+            messages.error(request, 'Error updating your recipe')
+            return JsonResponse({'success': False})
+
     return JsonResponse({'success': False})
+
 
 @login_required
 def recipe_delete(request, recipe_id):
     if request.method == 'POST':
         recipe = get_object_or_404(Recipe, id=recipe_id)
         recipe.delete()
+        messages.success(request, 'Recipe deleted successfully')
         return JsonResponse({'success': True})
-
-    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=400)
+    else:
+        messages.error(request, 'Error deleting your recipe')
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=400)
