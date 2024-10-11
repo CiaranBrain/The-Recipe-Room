@@ -31,20 +31,20 @@
                 <button type="submit" class="btn btn-primary w-25 mx-auto d-block">
                 Log in
                 </button>
+                <div class="text-center mt-4">
+                    <p>Or sign in with:</p>
+                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary w-25 mb-2">
+                        <i class="fab fa-facebook-f"></i> Sign in with Facebook
+                    </a>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger w-25 mb-2">
+                        <i class="fab fa-google"></i> Sign in with Google
+                    </a>
+                </div>
             </form>
             <p class="text-center mt-3">
                 <a href="{% url 'password_reset' %}">Forgot your password?</a>
             </p>
     </div>
 
-    <div class="text-center mt-4">
-        <p>Or sign in with:</p>
-        <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary w-25 mb-2">
-        <i class="fab fa-facebook-f"></i> Sign in with Facebook
-        </a>
-        <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger w-25 mb-2">
-        <i class="fab fa-google"></i> Sign in with Google
-        </a>
-    </div>
 
 {% endblock %}

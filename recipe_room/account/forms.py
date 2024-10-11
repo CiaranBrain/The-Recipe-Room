@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Profile
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         label='Username',
@@ -20,17 +21,29 @@ class LoginForm(forms.Form):
         })
     )
 
+
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}))
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Repeat your password'}))
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your password'}))
+    password2 = forms.CharField(
+        label='Repeat password',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control', 'placeholder': 'Repeat your password'}))
 
     class Meta:
         model = User
         fields = ['username', 'first_name', 'email']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your username'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your first name'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email address'}),
+            'username': forms.TextInput(attrs={
+             'class': 'form-control', 'placeholder': 'Enter your username'}),
+            'first_name': forms.TextInput(attrs={
+             'class': 'form-control', 'placeholder': 'Enter your first name'}),
+            'email': forms.EmailInput(attrs={
+             'class': 'form-control',
+             'placeholder': 'Enter your email address'}),
         }
 
     def clean_password2(self):
@@ -45,6 +58,7 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Email already in use.')
         return data
 
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
@@ -53,10 +67,11 @@ class UserEditForm(forms.ModelForm):
     def clean_email(self):
         data = self.cleaned_data['email']
         qs = User.objects.exclude(id=self.instance.id)\
-                                  .filter(email=data)
+            .filter(email=data)
         if qs.exists():
             raise forms.ValidationError(' Email already in use.')
         return data
+
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
