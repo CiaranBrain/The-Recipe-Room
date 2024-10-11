@@ -4,31 +4,53 @@
 {% block title %}Log-in{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Log In</h1>
-        <p class="text-center mb-4">Please use the following form to log in. If you don't have an account, <a href="{% url 'register' %}">register here</a>.</p>
-        <form method="post" class="shadow p-4 rounded bg-light">
-            {% csrf_token %}
-            <div class="mb-3 text-center">
-                {{ form.username.label }}
-                <div class="w-50 mx-auto">
-                    {{ form.username }}
-                    {% if form.username.errors %}
-                        <div class="text-danger">{{ form.username.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="mb-3 text-center">
-                {{ form.password.label }}
-                <div class="w-50 mx-auto">
-                    {{ form.password }}
-                    {% if form.password.errors %}
-                        <div class="text-danger">{{ form.password.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary w-25 mx-auto d-block">Log in</button>
-        </form>
-        <p class="text-center mt-3"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Log In</h1>
+  <p class="text-center mb-4">
+    Please use the following form to log in. If you don't have an account,
+    <a href="{% url 'register' %}">register here</a>.
+  </p>
+  <form method="post" class="shadow p-4 rounded bg-light">
+    {% csrf_token %}
+    <div class="mb-3 text-center">
+      {{ form.username.label }}
+      <div class="w-50 mx-auto">
+        {{ form.username }} {% if form.username.errors %}
+        <div class="text-danger">{{ form.username.errors }}</div>
+        {% endif %}
+      </div>
     </div>
+    <div class="mb-3 text-center">
+      {{ form.password.label }}
+      <div class="w-50 mx-auto">
+        {{ form.password }} {% if form.password.errors %}
+        <div class="text-danger">{{ form.password.errors }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-25 mx-auto d-block">
+      Log in
+    </button>
+  </form>
+  <p class="text-center mt-3">
+    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+  </p>
+</div>
+
+<div class="text-center mt-4">
+  <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block">
+    <i class="fab fa-facebook-f"></i> Sign in with Facebook
+  </a>
+</div>
+<div class="text-center mt-2">
+  <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block">
+    <i class="fab fa-google"></i> Sign in with Google
+  </a>
+</div>
+
+ <li class="google">
+ <a href="{% url 'social:begin' 'google-oauth2' %}">
+ Sign in with Google
+ </a>
+ </li>
 {% endblock %}
